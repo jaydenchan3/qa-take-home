@@ -97,3 +97,48 @@ booking and read it back) works at the simplest level. If it fails, nothing else
    - No error responses documented for any endpoint
    - id is typed String on GET but Number on PUT, PATCH and DELETE
    Documentation bugs: would mislead developers; API behavior itself unaffected.
+
+# Part 3: Bug Report
+
+## BUG-01: Checkout overview shows unrounded item total ($59.980000000000004)
+
+**Severity:** Low. Display only: tax and total are calculated correctly, so the
+customer is charged the right amount, but a malformed price is shown at the point of purchase.
+**Priority suggestion:** P2.
+**Environment:** https://www.saucedemo.com, Chrome 155.0.8059.86 (64-bit), WSL/Windows, 2026-10-28.
+**User:** standard_user / secret_sauce
+
+### Steps to reproduce
+1. Go to https://www.saucedemo.com and log in as standard_user / secret_sauce.
+2. Ensure the cart is empty (Menu > Reset App State if needed).
+3. Click "Add to cart" on "Sauce Labs Bike Light" ($9.99).
+4. Click "Add to cart" on "Sauce Labs Fleece Jacket" ($49.99).
+5. Click the cart icon, then "Checkout".
+6. Enter any First Name, Last Name and Postal Code, then click "Continue".
+7. Look at "Price Total" on the Checkout: Overview page.
+
+### Expected
+Item total: $59.98 (9.99 + 49.99), shown to 2 decimal places.
+
+### Actual
+Item total: $59.980000000000004
+Tax: $4.80 (correct: 8% of 59.98 = 4.7984, rounded)
+Total: $64.78 (correct)
+
+### Reproducibility
+2/2 attempts with this item combination.
+Control: Sauce Labs Backpack ($29.99) + Sauce Labs Bolt T-Shirt ($15.99) displays
+correctly as $45.98 / $3.68 / $49.66, so the issue depends on the item combination.
+
+### Evidence
+Screenshot: TODO: filename (checkout overview showing $59.980000000000004)
+
+### Suspected cause (not confirmed)
+The item total appears to be summed as binary floating-point numbers and displayed
+without rounding to 2 decimals: in JavaScript, 9.99 + 49.99 evaluates to 59.980000000000004.
+Fix would be to format the displayed value to 2 decimals or compute money in integer cents.
+
+### Impact
+No incorrect charge, but a visibly wrong price on the final confirmation screen undermines
+customer trust and may cause abandoned checkouts. Could affect any price combination
+whose float sum isn't exactly representable.
