@@ -127,8 +127,8 @@ booking and read it back) works at the simplest level. If it fails, nothing else
 
 ## BUG-01: Checkout overview shows unrounded item total ($59.980000000000004)
 
-**Severity:** Low. Display only: tax and total are calculated correctly, so the
-the displayed tax and total are correct, but a malformed price is shown at the point of purchase.
+**Severity:** Low. Display only: the displayed tax and total are correct, but a malformed
+price is shown at the point of purchase.
 **Priority suggestion:** P2.
 **Environment:** https://www.saucedemo.com, Chrome 155.0.8059.86 (64-bit), WSL/Windows, 2026-10-28.
 **User:** standard_user / secret_sauce
