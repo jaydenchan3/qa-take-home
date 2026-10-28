@@ -13,6 +13,8 @@
   (see README Known issues).
 - Not completed: Frontend tests run in Chrome only. Automated API test does not delete the
   booking it creates (sandbox resets periodically). UI test flakiness root cause not confirmed.
+  Part 1 did not cover sorting, removing from cart, logout, or the other test accounts
+  (performance_glitch_user, error_user, visual_user).
 
 # Part 1: Frontend Testing (https://www.saucedemo.com)
 Environment: Chrome 155.0.8059.86 (64-bit). Date: 2026-10-28.
@@ -126,7 +128,7 @@ booking and read it back) works at the simplest level. If it fails, nothing else
 ## BUG-01: Checkout overview shows unrounded item total ($59.980000000000004)
 
 **Severity:** Low. Display only: tax and total are calculated correctly, so the
-customer is charged the right amount, but a malformed price is shown at the point of purchase.
+the displayed tax and total are correct, but a malformed price is shown at the point of purchase.
 **Priority suggestion:** P2.
 **Environment:** https://www.saucedemo.com, Chrome 155.0.8059.86 (64-bit), WSL/Windows, 2026-10-28.
 **User:** standard_user / secret_sauce
@@ -156,7 +158,7 @@ correctly as $45.98 / $3.68 / $49.66, so the issue depends on the item combinati
 ### Related observation
 The "Generate PDF order" receipt for the same order (Fleece Jacket + Bike Light) shows
 Item total $59.98, Tax $4.80, Total $64.78, correctly rounded. The defect is confined
-to the Checkout: Overview page display; the order data itself is correct.
+to the Checkout: Overview page display; the order data appears correct.
 Evidence: evidence/part3.pdf (PDF receipt)
 
 ### Evidence
@@ -172,7 +174,7 @@ missing a 2-decimal formatting step that the PDF path has.
 ### Impact
 No incorrect charge, but a visibly wrong price on the final confirmation screen undermines
 customer trust and may cause abandoned checkouts. Could affect any price combination
-whose float sum isn't exactly representable.
+whose floating-point sum doesn't print as a clean 2-decimal value.
 
 # Part 4: Bug Prioritization
 
