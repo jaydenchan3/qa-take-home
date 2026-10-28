@@ -1,0 +1,142 @@
+jatychan@JayPC:~/challenges/run_3$    curl -i https://restful-booker.herokuapp.com/ping
+HTTP/2 201
+content-type: text/plain; charset=utf-8
+date: Wed, 28 Oct 2026 17:49:55 GMT
+etag: W/"7-rM9AyJuqT6iOan/xHh+AW+7K/T8"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=0lws3vnpcYZcsF8TWirZvP6sHGqicYZVpeXFudfPGDM%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209795"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=0lws3vnpcYZcsF8TWirZvP6sHGqicYZVpeXFudfPGDM%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209795"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 7
+
+Createdjatychan@JayPC:~/challenges/run_3$ curl -i -X POST https://restful-booker.herokuapp.com/booking \
+>   -H "Content-Type: application/json" -H "Accept: application/json" \
+>   -d '{"firstname":"Testy","lastname":"McTest","totalprice":123,"depositpaid":true,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"},"additionalneeds":"Breakfast"}'
+HTTP/2 200
+content-type: application/json; charset=utf-8
+date: Wed, 28 Oct 2026 17:50:08 GMT
+etag: W/"c8-v1lrCMfC3nL+3SnahS/SpoqI+Xg"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=UgMKI4ENUcOTGsrGzJNzSQ6h%2F6nAbQxRpVnvjuKHa78%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209808"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=UgMKI4ENUcOTGsrGzJNzSQ6h%2F6nAbQxRpVnvjuKHa78%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209808"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 200
+
+{"bookingid":5062,"booking":{"firstname":"Testy","lastname":"McTest","totalprice":123,"depositpaid":true,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"},"additionalneeds":"Breakfast"}}jatychan@JayPC:~/challenges/run_3$ ^C
+jatychan@JayPC:~/challenges/run_3$ ^C
+jatychan@JayPC:~/challenges/run_3$ t
+t: command not found
+jatychan@JayPC:~/challenges/run_3$ curl -i https://restful-booker.herokuapp.com/booking/5062 -H "Accept: application/json"
+HTTP/2 404
+content-type: text/plain; charset=utf-8
+date: Wed, 28 Oct 2026 17:51:02 GMT
+etag: W/"9-0gXL1ngzMqISxa6S1zx3F4wtLyg"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=do6i%2FMKR47h86o3HM3s7N2ghHfcwdVbbOn3Ia2etkaw%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209862"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=do6i%2FMKR47h86o3HM3s7N2ghHfcwdVbbOn3Ia2etkaw%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209862"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 9
+
+Not Foundjatychan@JayPC:~/challenges/run_3$ curl -i -X PUT https://restful-booker.herokuapp.com/booking/5062 \
+>   -H "Content-Type: application/json" -H "Accept: application/json" \
+>   -d '{"firstname":"Hacked","lastname":"McTest","totalprice":1,"depositpaid":false,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"}}'
+HTTP/2 403
+content-type: text/plain; charset=utf-8
+date: Wed, 28 Oct 2026 17:51:07 GMT
+etag: W/"9-PatfYBLj4Um1qTm5zrukoLhNyPU"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=uil0QgT%2BcGW%2BooNYTrLMabEM5%2FJoOZNlYbXdD5GVFWU%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209867"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=uil0QgT%2BcGW%2BooNYTrLMabEM5%2FJoOZNlYbXdD5GVFWU%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209867"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 9
+
+Forbiddenjatychan@JayPC:~/challenges/run_3$ curl -i https://restful-booker.herokuapp.com/booking/5062 -H "Accept: application/json"
+HTTP/2 404
+content-type: text/plain; charset=utf-8
+date: Wed, 28 Oct 2026 17:51:11 GMT
+etag: W/"9-0gXL1ngzMqISxa6S1zx3F4wtLyg"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=OH6EomjTZPCACjVgnRYwDlSsJ3HHK2bOiyHqIZLtwms%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209871"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=OH6EomjTZPCACjVgnRYwDlSsJ3HHK2bOiyHqIZLtwms%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209871"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 9
+
+Not Foundjatychan@JayPC:~/challenges/run_3$ R=$(curl -si -X POST https://restful-booker.herokuapp.com/booking \
+>   -H "Content-Type: application/json" -H "Accept: application/json" \
+>   -d '{"firstname":"Testy","lastname":"McTest","totalprice":123,"depositpaid":true,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"},"additionalneeds":"Breakfast"}')
+
+jatychan@JayPC:~/challenges/run_3$ echo "$R"; ID=$(echo "$R" | grep -o '"bookingid":[0-9]*' | cut -d: -f2); echo "== ID=$ID"
+HTTP/2 200
+content-type: application/json; charset=utf-8
+date: Wed, 28 Oct 2026 17:52:09 GMT
+etag: W/"c7-96d9EkGzbJ2+2e1O1OkxjNoRnng"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=2vvnqMPhzqZsNs72nE4kR%2FCOpbMDm%2FFuy7uFdQoZw2M%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209929"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=2vvnqMPhzqZsNs72nE4kR%2FCOpbMDm%2FFuy7uFdQoZw2M%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209929"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 199
+
+{"bookingid":666,"booking":{"firstname":"Testy","lastname":"McTest","totalprice":123,"depositpaid":true,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"},"additionalneeds":"Breakfast"}}
+== ID=666
+jatychan@JayPC:~/challenges/run_3$ echo "== GET"; curl -si https://restful-booker.herokuapp.com/booking/$ID -H "Accept: application/json"
+== GET
+HTTP/2 200
+content-type: application/json; charset=utf-8
+date: Wed, 28 Oct 2026 17:52:09 GMT
+etag: W/"ab-a78kjWzj1tmHC3plGjOdziKU9j8"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=2vvnqMPhzqZsNs72nE4kR%2FCOpbMDm%2FFuy7uFdQoZw2M%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209929"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=2vvnqMPhzqZsNs72nE4kR%2FCOpbMDm%2FFuy7uFdQoZw2M%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209929"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 171
+
+{"firstname":"Testy","lastname":"McTest","totalprice":123,"depositpaid":true,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"},"additionalneeds":"Breakfast"}jatychan@JayPC:~/challenges/run_3$ echo; echo "== PUT no auth"; curl -si -X PUT https://restful-booker.herokuapp.com/booking/$ID \
+>   -H "Content-Type: application/json" -H "Accept: application/json" \
+>   -d '{"firstname":"Hacked","lastname":"McTest","totalprice":1,"depositpaid":false,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"}}'
+
+== PUT no auth
+HTTP/2 403
+content-type: text/plain; charset=utf-8
+date: Wed, 28 Oct 2026 17:52:10 GMT
+etag: W/"9-PatfYBLj4Um1qTm5zrukoLhNyPU"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=b2pVKfnpdhOeIUg4mOQJNeLmtWMHn8A3HessyWVhJh8%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209930"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=b2pVKfnpdhOeIUg4mOQJNeLmtWMHn8A3HessyWVhJh8%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209930"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 9
+
+Forbiddenjatychan@JayPC:~/challenges/run_3$ echo; echo "== RE-GET"; curl -si https://restful-booker.herokuapp.com/booking/$ID -H "Accept: application/json"
+
+== RE-GET
+HTTP/2 200
+content-type: application/json; charset=utf-8
+date: Wed, 28 Oct 2026 17:52:10 GMT
+etag: W/"ab-a78kjWzj1tmHC3plGjOdziKU9j8"
+nel: {"report_to":"heroku-nel","response_headers":["Via"],"max_age":3600,"success_fraction":0.01,"failure_fraction":0.1}
+report-to: {"group":"heroku-nel","endpoints":[{"url":"https://nel.heroku.com/reports?s=b2pVKfnpdhOeIUg4mOQJNeLmtWMHn8A3HessyWVhJh8%3D\u0026sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add\u0026ts=1793209930"}],"max_age":3600}
+reporting-endpoints: heroku-nel="https://nel.heroku.com/reports?s=b2pVKfnpdhOeIUg4mOQJNeLmtWMHn8A3HessyWVhJh8%3D&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&ts=1793209930"
+server: Heroku
+via: 2.0 heroku-router
+x-powered-by: Express
+content-length: 171
+
+{"firstname":"Testy","lastname":"McTest","totalprice":123,"depositpaid":true,"bookingdates":{"checkin":"2026-11-01","checkout":"2026-11-05"},"additionalneeds":"Breakfast"}jatychan@JayPC:~/challenges/run_3$ curl -si https://restful-booker.herokuapp.com/booking/666 -H "Accept: application/json" | head -1
+HTTP/2 200
+jatychan@JayPC:~/challenges/run_3$ ( for i in $(seq 1 12); do echo "$(date +%T) $(curl -s -o /dev/null -w '%{http_code}' https://restful-booker.herokuapp.com/booking/666)"; sleep 15; done ) > reset_watch.log 2>&1 &
+[1] 310915
