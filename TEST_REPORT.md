@@ -156,3 +156,26 @@ missing a 2-decimal formatting step that the PDF path has.
 No incorrect charge, but a visibly wrong price on the final confirmation screen undermines
 customer trust and may cause abandoned checkouts. Could affect any price combination
 whose float sum isn't exactly representable.
+
+# Part 4: Bug Prioritization
+
+## Ranking
+| Rank | Bug | Blocks release? | Reasoning |
+|---|---|---|---|
+| 1 | C: User can view another user's order (name, address) by changing the order number in the URL | Yes | Security/privacy breach. Exposure of customer data can't be undone, destroys customer trust, and in healthcare may carry legal reporting obligations. Silent: the app looks fine while it leaks. |
+| 2 | B: Place Order does nothing for any user | Yes | Core functionality broken for everyone, no workaround: zero orders, zero revenue. Severe but recoverable: once fixed and deployed, orders resume. |
+| 3 | F: Expired token returns HTTP 200 with an error message instead of 401 | No | Clients that treat 200 as success may show stale or empty data or never redirect to login. Correctness issue with a security flavor across every API consumer; fix soon after release. |
+| 4 | E: Exports over 1,000 items take ~40s | No | Works, just slowly, and only for large exports. Performance issue; impact depends on who exports at that size. |
+| 5 | D: Cart count stays at 0 until refresh; item is in the cart | No | Display out of sync with real state. Workaround exists (refresh). Can confuse users into adding items twice. |
+| 6 | A: Footer typo "Privcay Policy" | No | Cosmetic, lowest severity. A one-line fix, so worth including if it's free, but it doesn't drive the decision (low severity, near-zero cost). |
+
+## Release blockers
+B and C. C exposes customer data; B means the release can't do its basic job. I would not ship with either.
+
+## Questions before a final decision
+- C: Can any logged-in user exploit it, or only certain roles? Is there evidence it has already been exploited (access logs)? Does it fall under HIPAA or other breach-notification rules?
+- B: Is there any workaround (phone orders, previous build, feature flag rollback)? Is it all browsers/platforms?
+- C and B: How long would each fix take, and how firm is the release date?
+- F: Which clients consume this API, and do any rely on the status code to detect session expiry?
+- E: Who exports over 1,000 items, and how often? Does the export time out anywhere?
+- D: Does it cause duplicate items or abandoned carts in analytics?
