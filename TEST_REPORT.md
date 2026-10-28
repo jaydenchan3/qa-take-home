@@ -7,21 +7,23 @@ Environment: Chrome 155.0.8059.86 (64-bit). Date: 2026-10-28.
    $59.980000000000004" (expected $59.98). Tax $4.80 and Total $64.78 are correct, so the
    display is wrong, not the charge. Reproduced twice. Control: Backpack ($29.99) + Bolt
    T-Shirt ($15.99) shows $45.98 / $3.68 / $49.66 correctly. Likely cause: unrounded JS
-   float addition (suspected, not confirmed). Evidence: screenshots/TODO-filename.
+   float addition (suspected, not confirmed). Evidence: evidence/part3.png.
 2. Product copy contains code-like text: "carry.allTheThings()" in the Backpack
    description and the product name "Test.allTheThings() T-Shirt (Red)". Possibly
    intentional for a demo store; would raise as a question, not a bug.
 3. Checkout overview shows pre-filled "Payment Information: SauceCard #31337" and "Free
    Pony Express Delivery!" without the user entering payment details. Assumed demo
    behavior.
+4. With all checkout fields blank, only "Error: First Name is required" is shown; the form
+   reports one missing field at a time. Minor usability note.
 
 ## Test cases
 | ID / Title | Steps | Expected Result | Priority / Suite | Status / Actual |
 |---|---|---|---|---|
 | FE-01: Locked-out user cannot log in (Negative) | 1. Open login page 2. Username locked_out_user, password secret_sauce 3. Click Login | Error "Epic sadface: Sorry, this user has been locked out." shown; user stays on login page | P1 / Regression | Pass. Exact error shown; user stays on login page. |
-| FE-02: Add item to cart (Positive) | 1. Log in as standard_user 2. Click "Add to cart" on Sauce Labs Backpack 3. Open cart | Cart badge shows 1; button changes to "Remove"; cart lists Sauce Labs Backpack, qty 1, $29.99 | P0 / Both | Pass. Cart lists Backpack, qty 1, $29.99. TODO: badge/Remove observed but not captured |
-| FE-03: Checkout blocked when First Name blank (Negative) | 1. Log in, add an item 2. Cart > Checkout 3. Leave First Name blank, fill Last Name and Postal Code 4. Click Continue | Error "Error: First Name is required"; stays on Checkout: Your Information | P1 / Regression | Pass. Exact error shown |
-| FE-04: End-to-end checkout (Positive) | 1. Log in as standard_user 2. Add item(s) 3. Cart > Checkout 4. Enter First Name, Last Name, Postal Code > Continue 5. Verify overview totals 6. Click Finish | Item total = sum of item prices; tax and total correct; "Thank you for your order!" shown | P0 / Both | Pass. TODO: confirm items: Backpack only: $29.99 / Tax $2.40 / Total $32.39; confirmation shown |
+| FE-02: Add item to cart (Positive) | 1. Log in as standard_user 2. Click "Add to cart" on Sauce Labs Backpack 3. Open cart | Cart badge shows 1; button changes to "Remove"; cart lists Sauce Labs Backpack, qty 1, $29.99 | P0 / Both | Pass. Cart badge shows 1; Backpack button changed to "Remove" on the products page (other items still "Add to cart"); cart lists Sauce Labs Backpack, qty 1, $29.99. Evidence: evidence/fe02_products.png, evidence/fe02_cart.png |
+| FE-03: Checkout blocked when First Name blank (Negative) | 1. Log in, add an item 2. Cart > Checkout 3. Leave First Name blank, fill Last Name and Postal Code 4. Click Continue | Error "Error: First Name is required"; stays on Checkout: Your Information | P1 / Regression | Pass. With Last Name and Postal Code filled and First Name blank, "Error: First Name is required" shown; stays on Checkout: Your Information. |
+| FE-04: End-to-end checkout (Positive) | 1. Log in as standard_user 2. Add item(s) 3. Cart > Checkout 4. Enter First Name, Last Name, Postal Code > Continue 5. Verify overview totals 6. Click Finish | Item total = sum of item prices; tax and total correct; "Thank you for your order!" shown | P0 / Both | Pass. Sauce Labs Fleece Jacket only: Item total $49.99 / Tax $4.00 / Total $53.99 (matches expected: 8% of 49.99 = 3.9992, rounded to $4.00); "Thank you for your order!" shown after Finish. |
 
 Priority scale: P0 = core flow broken, no workaround. P1 = important behavior wrong,
 narrower impact or workaround exists. P2 = minor/cosmetic.
@@ -34,6 +36,7 @@ Regression.
 
 ## Execution summary
 4 executed, 4 passed, 0 failed (2 positive, 2 negative), standard_user.
+Plus 1 re-run as problem_user (FE-04): Fail (see below).
 
 ## problem_user re-run (FE-04)
 Status: Fail. On "Checkout: Your Information", typing in Last Name overwrites the First
@@ -49,6 +52,9 @@ inventory, add to cart, cart page).
 ## Assumptions
 - Q: Is there a required tax rate? Assumption: 8% inferred from observed totals.
 - Q: Does Postal Code require a format? Assumption: any non-empty value; "a" was accepted.
+- Q: Are problem_user's defects intentional? Assumption: yes, it is a deliberately faulty
+  test account, so its Last Name defect is documented as a difference rather than chosen
+  as the Part 3 bug, which was reproduced on standard_user.
 
 # Part 2: API Testing
 API: https://restful-booker.herokuapp.com. Tool: curl -i, WSL Ubuntu. Date: 2026-10-28.
@@ -130,13 +136,21 @@ Total: $64.78 (correct)
 Control: Sauce Labs Backpack ($29.99) + Sauce Labs Bolt T-Shirt ($15.99) displays
 correctly as $45.98 / $3.68 / $49.66, so the issue depends on the item combination.
 
+### Related observation
+The "Generate PDF order" receipt for the same order (Fleece Jacket + Bike Light) shows
+Item total $59.98, Tax $4.80, Total $64.78, correctly rounded. The defect is confined
+to the Checkout: Overview page display; the order data itself is correct.
+Evidence: evidence/part3.pdf (PDF receipt)
+
 ### Evidence
-Screenshot: TODO: filename (checkout overview showing $59.980000000000004)
+Screenshot: evidence/part3.png (checkout overview showing $59.980000000000004)
 
 ### Suspected cause (not confirmed)
 The item total appears to be summed as binary floating-point numbers and displayed
 without rounding to 2 decimals: in JavaScript, 9.99 + 49.99 evaluates to 59.980000000000004.
 Fix would be to format the displayed value to 2 decimals or compute money in integer cents.
+The PDF receipt formats the same value correctly, which suggests the overview page is
+missing a 2-decimal formatting step that the PDF path has.
 
 ### Impact
 No incorrect charge, but a visibly wrong price on the final confirmation screen undermines
