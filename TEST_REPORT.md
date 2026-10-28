@@ -88,6 +88,7 @@ Raw request/response output: evidence/part2_curl.txt
 | 1 | PUT /booking/666 | No Cookie or Authorization header. Body changes firstname to "Hacked", totalprice 1, depositpaid false | Rejected with 401 or 403 | 403 Forbidden (body "Forbidden") | Pass |
 | 2 | GET /booking/666 | Accept: application/json | 200; booking unchanged | 200; unchanged (Testy / 123 / true); same etag as before the PUT | Pass |
 
+Q: What status should an unauthorized PUT return?
 Assumption: the API docs define no error responses for any endpoint. Expected status is
 therefore taken from HTTP convention (401 or 403 = rejected), and the decisive check is
 that the booking is unchanged on re-read. The re-GET proves the rejection was real, not

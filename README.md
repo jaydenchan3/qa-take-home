@@ -22,6 +22,8 @@ tests/test_booking_api.py automates the Part 2 Smoke scenario: POST /booking, th
 immediately GET /booking/{id}, asserting both return 200 and the retrieved booking equals
 the sent payload exactly. API chosen over frontend: it is the Part 2 Smoke test, has no
 browser setup risk, and every line maps to a request I ran by hand with curl.
+Python + pytest + requests: standard and minimal; pytest gives one-command runs and
+readable failure diffs, and each requests call maps one-to-one to a curl call I ran by hand.
 Repeatable: each run creates its own booking, so it never depends on existing data. It
 does not delete the booking; the sandbox resets periodically.
 
