@@ -1,3 +1,17 @@
+# Summary
+- Part 1 (Frontend, saucedemo): 4 test cases executed manually as standard_user: 4 Pass
+  (2 positive, 2 negative). 1 re-run as problem_user (FE-04): Fail, Last Name input is
+  redirected into First Name, checkout blocked.
+- Part 2 (API, restful-booker): 2 scenarios / 4 requests via curl: all Pass.
+- Part 3: BUG-01, checkout overview shows unrounded item total ($59.980000000000004), Low severity.
+- Part 4: Ranked C > B > F > E > D > A. Release blockers: C and B.
+- Part 5: 1 automated API test (pytest + requests): Pass. Fail-to-pass check performed.
+- Key findings: BUG-01 (display-only float artifact; PDF receipt correct); problem_user
+  checkout blocker; API returns 403 (not 401) without credentials; several API doc
+  inconsistencies; one unexplained booking disappearance, likely the documented reset.
+- Not completed: Bonus: TBD. Frontend tests run in Chrome only. Automated test does not
+  delete the booking it creates (sandbox resets periodically).
+
 # Part 1: Frontend Testing (https://www.saucedemo.com)
 Environment: Chrome 155.0.8059.86 (64-bit). Date: 2026-10-28.
 
