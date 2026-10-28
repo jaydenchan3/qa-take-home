@@ -173,7 +173,10 @@ whose float sum isn't exactly representable.
 B and C. C exposes customer data; B means the release can't do its basic job. I would not ship with either.
 
 ## Questions before a final decision
-- C: Can any logged-in user exploit it, or only certain roles? Is there evidence it has already been exploited (access logs)? Does it fall under HIPAA or other breach-notification rules?
+- C: Is this new in the release build, or already live in production? If already live,
+  it's an active incident: check access logs for exploitation, assess breach-notification
+  obligations (e.g. HIPAA), and fix immediately regardless of the release. If new in this
+  build, it's a release blocker only. Also: can any logged-in user exploit it, or only certain roles?
 - B: Is there any workaround (phone orders, previous build, feature flag rollback)? Is it all browsers/platforms?
 - C and B: How long would each fix take, and how firm is the release date?
 - F: Which clients consume this API, and do any rely on the status code to detect session expiry?
