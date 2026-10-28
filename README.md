@@ -29,6 +29,9 @@ does not delete the booking; the sandbox resets periodically.
 Changed the expected additionalneeds to "Lunch". The test failed at the final assertion
 with diff {'additionalneeds': 'Breakfast'} != {'additionalneeds': 'Lunch'}. Restored with
 git checkout; passed again. Confirms the assertion actually checks the saved data.
+UI test: changed the expected price to "$19.99". The test failed at the price assertion
+('$29.99' == '$19.99'), with every earlier step passing; restored with git checkout; full
+suite passed again.
 
 ## Result
 API test: 1 passed (2026-10-28). UI test: passes on most runs, intermittently flaky
@@ -57,6 +60,8 @@ I deliberately did not add click retries: a retry would make the test green by
 hiding exactly the kind of bug it should catch.
 Next step: capture a screenshot and page state on failure, run it many times, and
 manually try rapid clicks right after login to see if the defect reproduces by hand.
+Also investigate whether the newer 'Dynamic Catalog' feature re-renders the product list
+after load.
 
 ## Next steps
 Automate next: the negative scenario (PUT without auth, then re-GET unchanged), cheap and
