@@ -60,7 +60,7 @@ I deliberately did not add click retries: a retry would make the test green by
 hiding exactly the kind of bug it should catch.
 Next step: capture a screenshot and page state on failure, run it many times, and
 manually try rapid clicks right after login to see if the defect reproduces by hand.
-Also investigate whether the newer 'Dynamic Catalog' feature re-renders the product list
+Also investigate whether the 'Dynamic Catalog' feature re-renders the product list
 after load.
 
 ## Next steps
