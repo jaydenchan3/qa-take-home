@@ -9,7 +9,8 @@
 - Key findings: BUG-01 (display-only float artifact; PDF receipt correct); problem_user
   checkout blocker; API returns 403 (not 401) without credentials; several API doc
   inconsistencies; one unexplained booking disappearance, likely the documented reset.
-- Not completed: Bonus: TBD. Frontend tests run in Chrome only. Automated test does not
+- Not completed: Bonus: 1 frontend test (Selenium, FE-02): passes on most runs but is intermittently
+  flaky (see README). Frontend tests run in Chrome only. Automated test does not
   delete the booking it creates (sandbox resets periodically).
 
 # Part 1: Frontend Testing (https://www.saucedemo.com)

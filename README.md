@@ -10,7 +10,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 python -m pytest -q
 ```
-Expected: 1 passed. Needs internet access; hits the live restful-booker API.
+The UI test needs Chrome: Selenium Manager (built into Selenium) automatically downloaded
+Chrome for Testing and chromedriver into ~/.cache/selenium on first run. No manual driver
+install. Needs internet.
+
+Expected: 2 passed (the UI test is intermittently flaky; see Known issues). Needs internet
+access; hits the live restful-booker API and saucedemo.com.
 
 ## What it tests and why
 tests/test_booking_api.py automates the Part 2 Smoke scenario: POST /booking, then
@@ -29,6 +34,27 @@ git checkout; passed again. Confirms the assertion actually checks the saved dat
 1 passed (2026-10-28). Known risk: the API's periodic data reset could delete the
 booking between POST and GET; mitigated by reading back immediately; failures print the
 response body.
+
+## Bonus: frontend test (Selenium)
+tests/test_saucedemo_ui.py automates FE-02 (a Part 1 Smoke test): log in as
+standard_user, add Sauce Labs Backpack, assert the button changes to "Remove" and
+the cart badge shows "1", then open the cart and assert exactly one item, "Sauce Labs
+Backpack", "$29.99". Why Selenium: I've used it before, so I can explain and modify
+it. Repeatable: each run starts a fresh browser session with an empty cart.
+
+## Known issues
+The UI test is intermittently flaky. Initial runs: 3 failures in 8. Each failure: the
+Add-to-cart click raised no error but had no effect (still on /inventory.html, button
+unchanged, no badge, no console errors), so the wait for "Remove" timed out. The test
+already used an explicit wait for the button to be clickable; I added a wait for the
+full product list before clicking, after which it passed 9 of 10 runs. Too few runs
+to prove that helped. Root cause not confirmed: most likely the click lands before
+the page's JavaScript is ready, but an intermittent app defect (a click that does
+nothing) can't be ruled out.
+I deliberately did not add click retries: a retry would make the test green by
+hiding exactly the kind of bug it should catch.
+Next step: capture a screenshot and page state on failure, run it many times, and
+manually try rapid clicks right after login to see if the defect reproduces by hand.
 
 ## Next steps
 Automate next: the negative scenario (PUT without auth, then re-GET unchanged), cheap and
