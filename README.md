@@ -31,7 +31,8 @@ with diff {'additionalneeds': 'Breakfast'} != {'additionalneeds': 'Lunch'}. Rest
 git checkout; passed again. Confirms the assertion actually checks the saved data.
 
 ## Result
-1 passed (2026-10-28). Known risk: the API's periodic data reset could delete the
+API test: 1 passed (2026-10-28). UI test: passes on most runs, intermittently flaky
+(see Known issues). Full suite: 2 passed on the final run. Known risk: the API's periodic data reset could delete the
 booking between POST and GET; mitigated by reading back immediately; failures print the
 response body.
 
@@ -43,9 +44,10 @@ Backpack", "$29.99". Why Selenium: I've used it before, so I can explain and mod
 it. Repeatable: each run starts a fresh browser session with an empty cart.
 
 ## Known issues
-The UI test is intermittently flaky. Initial runs: 3 failures in 8. Each failure: the
-Add-to-cart click raised no error but had no effect (still on /inventory.html, button
-unchanged, no badge, no console errors), so the wait for "Remove" timed out. The test
+The UI test is intermittently flaky. Initial runs: 3 failures in 8. In a separate
+diagnostic loop (2 failures in 8), each failure showed the click raised no error but had
+no effect: still on /inventory.html, button unchanged, no badge, no console errors, so
+the wait for "Remove" timed out. The pytest failures gave only the timeout traceback. The test
 already used an explicit wait for the button to be clickable; I added a wait for the
 full product list before clicking, after which it passed 9 of 10 runs. Too few runs
 to prove that helped. Root cause not confirmed: most likely the click lands before
@@ -58,6 +60,7 @@ manually try rapid clicks right after login to see if the defect reproduces by h
 
 ## Next steps
 Automate next: the negative scenario (PUT without auth, then re-GET unchanged), cheap and
-covers authorization; then FE-04 end-to-end checkout in a browser (Playwright).
+covers authorization; then FE-04 end-to-end checkout in Selenium, extending
+the bonus test.
 Keep manual: exploratory testing, visual/content checks (copy, images, layout), and
 account-specific quirks like problem_user, where human judgment finds more than scripts.
